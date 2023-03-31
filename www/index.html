@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--
+            Created by Kieren Moore 31/03/2023
+        -->
+        <meta charset="utf-8">
+        <script src="js/jquery-3.5.1.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+    </head>
+    <body>
+        <h1>Record care plan</h1>
+        <form name="careForm">
+            <p>
+                <!--Input for care record title-->
+                <label for="title">Title</label>
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder="Enter a title for the care record..."
+                    required
+                    minlength="1"
+                    maxlength="450"
+                    onchange="validate(event.target)"
+                />
+            </p>
+            <p>
+                <!--Input for patient name-->
+                <label for="patientName">Patient Name</label>
+                <input
+                    type="text"
+                    id="patientName"
+                    name="patientName"
+                    placeholder="Enter patient's name..."
+                    required
+                    minlength="1"
+                    maxlength="450"
+                />
+            </p>
+            <p>
+                <!--Input for user name-->
+                <label for="userName">User Name</label>
+                <input
+                    type="text"
+                    id="userName"
+                    name="userName"
+                    placeholder="Enter your user name..."
+                    required
+                    minlength="1"
+                    maxlength="450"
+                />
+            </p>
+            <p>
+                <!--Input for actual start date/time-->
+                <label for="actualStartDateTime">Actual Start Date/Time</label>
+                <input
+                    type="datetime-local"
+                    id="actualStartDateTime"
+                    name="actualStartDateTime"
+                    required
+                />
+            </p>
+            <p>
+                <!--Input for target start date/time-->
+                <label for="targetStartDateTime">Target Start Date/Time</label>
+                <input
+                    type="datetime-local"
+                    id="targetStartDateTime"
+                    name="targetStartDateTime"
+                    required
+                />
+            </p>
+            <p>
+                <!--Input for reason-->
+                <label for="reason">Reason</label>
+                <input
+                    type="text"
+                    id="reason"
+                    name="reason"
+                    placeholder="Enter a reason for the care plan..."
+                    required
+                    minlength="1"
+                    maxlength="1000"
+                />
+            </p>
+            <p>
+                <!--Input for action-->
+                <label for="action">Action</label>
+                <textarea
+                    id="action"
+                    name="action"
+                    placeholder="Record the action(s) taken..."
+                    required
+                    minlength="1"
+                    maxlength="1000"
+                ></textarea>
+            </p>
+            <p>
+                <!--Input for competion status-->
+                <label for="completeSelect">Complete:</label>
+                <select id="completeSelect" onchange="setComplete(this)">
+                    <option value="Yes">Yes</option>
+                    <option value="No" selected="selected">No</option>
+                </select>
+            </p>
+            <div id="endDateTimeContainer" hidden="true">
+                <p>
+                    <!--Input for target start date/time-->
+                    <label for="endDateTime">End Date/Time</label>
+                    <input
+                        type="datetime-local"
+                        id="endDateTime"
+                        name="endDateTime"
+                    />
+                    <!--Validity of entry on actual start date/time-->
+                    <span
+                        id="endDateTimeFeedback"
+                        class="invalid"
+                        hidden = true
+                        >End date/time cannot be before start date/time</span>
+                </p>
+            </div>
+            <div id="outcomeContainer" hidden="true">
+                <p>
+                    <!--Input for care record title-->
+                <label for="title">Outcome</label>
+                    <input
+                        type="text"
+                        id="outcome"
+                        name="outcome"
+                        placeholder="Enter the outcome for the care record..."
+                        minlength="1"
+                        maxlength="1000"
+                        width="5000"
+                    />
+            </div>
+            <input
+                type="button"
+                id="submitCareRecord"
+                value="Submit care record"
+                onclick="validateForm()"
+                />
+        </form>
+        <div id="formValidContainer"
+            class="invalid"
+            hidden = true>
+            <p>There are errors with your form:</p>
+            <span id="formErrorMessage"></span>
+        </div>
+        <script type="text/javascript" src="js/index.js"></script>
+    </body>
+</html>
