@@ -1,0 +1,28 @@
+[
+    {
+        "index": 0,
+        "Title": "Care record 1",
+        "Patient_Name": "John Doe",
+        "User_Name": "Care Worker 1",
+        "Actual_Start_DateTime": "2023-03-30T10:05:00.000",
+        "Target_DateTime": "2023-03-30T10:00:00.000",
+        "Reason": "Scheduled visit",
+        "Action": "Assistance with personal care",
+        "Completed": "Yes",
+        "End_DateTime": "2023-03-30T10:35:00.000",
+        "Outcome": "Positive"
+    },
+    {
+        "index": 1,
+        "Title": "Care record 2",
+        "Patient_Name": "John Doe",
+        "User_Name": "Care Worker 1",
+        "Actual_Start_DateTime": "2023-03-31T09:58:00.000",
+        "Target_DateTime": "2023-03-31T10:00:00.000",
+        "Reason": "Call out",
+        "Action": "Assistance with personal care and cooking",
+        "Completed": "Yes",
+        "End_DateTime": "2023-03-31T10:30:00.000",
+        "Outcome": "Positive"
+    }
+]

@@ -4,6 +4,7 @@
  * BASE_URL vale will need changing to point to API
  */
 const BASE_URL = 'http://127.0.0.1/API/'
+const careRecordData = [];
 
 /**
  * Toggle requirement of endDateTime and Outcome based on Completion status
@@ -112,7 +113,87 @@ function validateForm() {
     }
   }
 
+function getCareRecords() {
+    /**
+     * Get all care records.
+     * Likelihood is that this would require a username to get only the current users records.
+     */
+    var onSuccess = function (obj) {
+        console.log("getCareRecords received response object", obj);
+        // Inform the user what response received
+        if (obj.status == "success") {
+            /**
+             * Here each returned record could be added to a table of records.
+             * console log serves as placeholder code
+             */
+            $.each(obj.data, function (index, value) {
+                console.log(value);
+            });
+        } else if (obj.message) {
+            alert(obj.message);
+        } else {
+            alert(obj.status + " " + obj.data[0].reason);
+        }
+    };
 
+    let url = BASE_URL + "carerecord";
+    console.log("getCareRecords sending GET to " + url);
+    $.ajax(url, { type: "GET", data: {}, success: onSuccess });
+
+    /**
+     * Above code would interact with API.
+     * Mock data is used here
+     */
+    fetch('./data/data.json')
+    .then((response) => response.json())
+    .then(data => {
+        data.forEach(careRecord => {
+            careRecordData.push(data);
+            console.log(careRecord);
+            addTableRow(careRecord);
+        });
+    })
+    .catch(error => console.error(error));
+}
+
+function addTableRow(careRecord) {
+    const tableBody = document.querySelector('#careRecordsTable tbody');
+    const row = document.createElement('tr');
+    row.innerHTML = `
+    <td>${careRecord.Title}</td>
+    <td>${careRecord.Patient_Name}</td>
+    <td>${careRecord.User_Name}</td>
+    <td>${careRecord.Actual_Start_DateTime}</td>
+    <td>${careRecord.Target_DateTime}</td>
+    <td>${careRecord.Reason}</td>
+    <td>${careRecord.Action}</td>
+    <td>${careRecord.Completed}</td>
+    <td>${careRecord.End_DateTime}</td>
+    <td>${careRecord.Outcome}</td>
+    <td><button id="editRecord" onclick="editRecord(${careRecord.index})">Edit record</td>
+    `;
+    tableBody.appendChild(row);
+}
+
+function editRecord(id) {
+    console.log("edit record " + id);
+    fetch('./data/data.json')
+    .then((response) => response.json())
+    .then(data => {
+        console.log(data[id].Title)
+        document.forms["careForm"]["careRecordIndex"].value = data[id].index;
+        document.forms["careForm"]["title"].value = data[id].Title;
+        document.forms["careForm"]["patientName"].value = data[id].Patient_Name;
+        document.forms["careForm"]["userName"].value = data[id].User_Name;
+        document.forms["careForm"]["actualStartDateTime"].value = data[id].Actual_Start_DateTime;
+        document.forms["careForm"]["targetStartDateTime"].value = data[id].Target_DateTime;
+        document.forms["careForm"]["reason"].value = data[id].Reason;
+        document.forms["careForm"]["action"].value = data[id].Action;
+        document.forms["careForm"]["completeSelect"].value = data[id].Completed;
+        document.forms["careForm"]["endDateTime"].value = data[id].End_DateTime;
+        document.forms["careForm"]["outcome"].value = data[id].Outcome;
+    });
+}
 
 function submitCareRecord(careTitleValue,
     patientNameValue,
@@ -141,46 +222,27 @@ function submitCareRecord(careTitleValue,
 
     let url = BASE_URL + "carerecord";
     console.log("submitForm sending POST to " + url);
-    let careRecordData = {
+    let careRecord = {
+        "index": careRecordData.length + 1,
         "Title": careTitleValue,
-        "Patient Name": patientNameValue,
-        "User Name": userNameValue,
-        "Actual Start Date/Time": actualStartDateTimeValue,
-        "Target Date/Time": targetStartDateTimeValue,
+        "Patient_Name": patientNameValue,
+        "User_Name": userNameValue,
+        "Actual_Start_DateTime": actualStartDateTimeValue,
+        "Target_DateTime": targetStartDateTimeValue,
         "Reason": reasonValue,
         "Action": actionValue,
         "Completed": completeSelectValue,
-        "End Date/Time": endDateTimeValue,
+        "End_DateTime": endDateTimeValue,
         "Outcome": outcomeValue,
     }; 
-    console.log(careRecordData);
-    $.ajax(url, { type: "Post", data: careRecordData, success: onSuccess });
-}
+    console.log(careRecord);
+    $.ajax(url, { type: "Post", data: careRecord, success: onSuccess });
 
-function getCareRecords() {
     /**
-     * Get all care records.
-     * Likelihood is that this would require a username to get only the current users records.
+     * Above code would interact with API.
+     * Mock data is used here
      */
-    var onSuccess = function (obj) {
-        console.log("getCareRecords received response object", obj);
-        // Inform the user what response received
-        if (obj.status == "success") {
-            /**
-             * Here each returned record could be added to a table of records.
-             * console log serves as placeholder code
-             */
-            $.each(obj.data, function (index, value) {
-                console.log(value);
-            });
-        } else if (obj.message) {
-            alert(obj.message);
-        } else {
-            alert(obj.status + " " + obj.data[0].reason);
-        }
-    };
-
-    let url = BASE_URL + "carerecord";
-    console.log("getCareRecords sending GET to " + url);
-    $.ajax(url, { type: "GET", data: {}, success: onSuccess });
+    careRecordData.push(careRecord);
+    console.log(careRecordData);
+    addTableRow(careRecord);
 }
